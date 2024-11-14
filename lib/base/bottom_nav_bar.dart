@@ -31,9 +31,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ticket'),
-      ),
       body: appScreens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
