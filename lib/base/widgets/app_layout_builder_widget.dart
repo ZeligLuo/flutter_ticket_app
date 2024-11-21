@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppLayoutBuilderWidget extends StatelessWidget {
   final int randomDivider;
   final double width;
+  final bool? isColor;
 
-  const AppLayoutBuilderWidget({super.key, required this.randomDivider, this.width=3});
+  const AppLayoutBuilderWidget({super.key, required this.randomDivider, this.width=3, this.isColor});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class AppLayoutBuilderWidget extends StatelessWidget {
           height: 1,
           child: DecoratedBox(
               decoration: BoxDecoration(
-                color: Colors.white
+                color: isColor==null?Colors.white:Colors.grey.shade500
               )
           ),
         )),
