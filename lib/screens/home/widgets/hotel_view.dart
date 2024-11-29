@@ -11,7 +11,7 @@ class HotelView extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       width: size.width * 0.6,
-      height: 350,
+      height: 300,
       margin: EdgeInsets.only(right: 16),
       decoration: BoxDecoration(
           color: AppStyles.primaryColor,

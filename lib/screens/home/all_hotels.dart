@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ticket_app/base/res/styles/app_styles.dart';
 import 'package:ticket_app/base/utils/all_json.dart';
 import 'package:ticket_app/base/utils/app_routes.dart';
-import 'package:ticket_app/screens/home/widgets/hotel_view.dart';
 
 class AllHotels extends StatelessWidget {
   const AllHotels({super.key});
@@ -28,7 +27,7 @@ class AllHotels extends StatelessWidget {
               itemCount: hotelList.length,
               itemBuilder: (context, index) {
                 var singleHotel = hotelList[index];
-                return HotelGridView(hotel: singleHotel);
+                return HotelGridView(hotel: singleHotel, index: index);
               }),
         ),
       ),
@@ -38,15 +37,18 @@ class AllHotels extends StatelessWidget {
 
 class HotelGridView extends StatelessWidget {
   final Map<String, dynamic> hotel;
+  final int index;
 
-  const HotelGridView({super.key, required this.hotel});
+  const HotelGridView({super.key, required this.hotel, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: (){
-        Navigator.pushNamed(context, AppRoutes.hotelDetail);
+        Navigator.pushNamed(context, AppRoutes.hotelDetail, arguments: {
+          "index": index
+        });
       },
       child: Container(
         // width: size.width * 0.6,
@@ -84,22 +86,23 @@ class HotelGridView extends StatelessWidget {
               ),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 15),
                   child: Text(
                     hotel['destination'],
                     style:
-                    AppStyles.headlineStyle3.copyWith(color: Colors.white),
+                    AppStyles.headlineStyle3.copyWith(color: Colors.white, fontSize: 14),
                   ),
                 ),
                 SizedBox(width: 5,),
                 Padding(
-                  padding: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.only(right: 15),
                   child: Text(
                     "\$${hotel['price']}/Night",
                     style:
-                    AppStyles.headlineStyle4.copyWith(color: AppStyles.kakiColor),
+                    AppStyles.headlineStyle4.copyWith(color: AppStyles.kakiColor, fontSize: 12),
                   ),
                 ),
               ],
