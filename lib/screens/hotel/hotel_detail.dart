@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:get/get.dart';
 import 'package:ticket_app/base/res/styles/app_styles.dart';
 import 'package:ticket_app/base/utils/all_json.dart';
+import 'package:ticket_app/bloc/text_expansion_bloc.dart';
+import 'package:ticket_app/bloc/text_expansion_events.dart';
+import 'package:ticket_app/bloc/text_expansion_states.dart';
+// import 'package:ticket_app/controller/text_expansion_controller.dart';
+// import 'package:ticket_app/provider/text_expansion_provider.dart';
 
 class HotelDetail extends StatefulWidget {
   const HotelDetail({super.key});
@@ -80,8 +88,8 @@ class _HotelDetailState extends State<HotelDetail> {
             Padding(
                 padding: EdgeInsets.all(16),
                 child: ExpandedText(
-                  text: hotelList[index]['detail'],)
-                ),
+                  text: hotelList[index]['detail'],
+                )),
             Padding(
                 padding: EdgeInsets.all(16),
                 child: Text("More Images",
@@ -95,7 +103,8 @@ class _HotelDetailState extends State<HotelDetail> {
                   itemBuilder: (context, imagesIndex) {
                     return Container(
                         margin: EdgeInsets.all(8),
-                        child: Image.asset("assets/images/${hotelList[index]["images"][imagesIndex]}"));
+                        child: Image.asset(
+                            "assets/images/${hotelList[index]["images"][imagesIndex]}"));
                   }),
             )
           ]))
@@ -105,47 +114,48 @@ class _HotelDetailState extends State<HotelDetail> {
   }
 }
 
-class ExpandedText extends StatefulWidget {
+class ExpandedText extends StatelessWidget {
   final String text;
 
   const ExpandedText({super.key, required this.text});
 
   @override
-  State<ExpandedText> createState() => _ExpandedTextState();
-}
-
-class _ExpandedTextState extends State<ExpandedText> {
-  bool isExpanded = false;
-
-  _toggleExpansion() {
-    setState(() {
-      isExpanded = !isExpanded;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var textWidget = Text(
-      widget.text,
-      maxLines: isExpanded ? null : 5,
-      overflow: isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
-      textAlign: TextAlign.justify,
-    );
+    // var isExpanded = ref.watch(textExpansionNotifierProvider);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        textWidget,
-        GestureDetector(
-          onTap: () {
-            _toggleExpansion();
-          },
-          child: Text(
-            isExpanded ? "Less" : "More",
-            style: AppStyles.textStyle.copyWith(color: AppStyles.primaryColor),
-          ),
-        )
-      ],
-    );
+    return BlocBuilder<TextExpansionBloc, TextExpansionStates>(builder: (context, state) {
+      if(state is IsExpandedState) {
+        var isExpanded = state.isExpanded;
+
+        var textWidget = Text(
+          text,
+          maxLines: isExpanded ? null : 5,
+          overflow: isExpanded
+              ? TextOverflow.visible
+              : TextOverflow.ellipsis,
+          textAlign: TextAlign.justify,
+        );
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            textWidget,
+            GestureDetector(
+              onTap: () {
+                context.read<TextExpansionBloc>().add(IsExpandedEvent(!isExpanded));
+                // ref.watch(textExpansionNotifierProvider.notifier).toggleText(isExpanded);
+              },
+              child: Text(
+                isExpanded ? "Less" : "More",
+                style: AppStyles.textStyle.copyWith(color: AppStyles.primaryColor),
+              ),
+            )
+          ],
+        );
+      } else {
+        return Container();
+      }
+
+    });
   }
 }

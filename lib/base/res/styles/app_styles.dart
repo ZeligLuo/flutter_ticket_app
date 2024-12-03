@@ -15,6 +15,8 @@ class AppStyles {
   static Color ticketWhite = Color(0XFFFFFFFF);
   static Color dotColor = Color(0xFF8ACCF7);
   static Color planeColor2 = Color(0xFFBACCF7);
+  static Color profileLocationColor = Color(0xFFFEF4F3);
+  static Color profileTextColor = Color(0xFF526799);
 
   static TextStyle textStyle = TextStyle(
       fontSize: 16, fontWeight: FontWeight.w500, color: AppStyles.textColor
